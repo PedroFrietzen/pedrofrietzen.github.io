@@ -1,7 +1,182 @@
-<html>
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FTZEN - Em breve</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0a0a;
+      color: #fff;
+      font-family: 'Fredoka', sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    /* Fundo com leve gradiente (sem animação forte) */
+    .bg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle at 50% 50%, #1a0033, #000000);
+      opacity: 0.7;
+      filter: blur(100px);
+      z-index: 1;
+    }
+
+    /* Container central */
+    .container {
+      text-align: center;
+      z-index: 10;
+      position: relative;
+    }
+
+    /* <FTZEN/> - Preto com glow laranja FIXO */
+    .logo-text {
+      font-size: 6.8rem;
+      font-weight: 900;
+      color: #000;
+      letter-spacing: 5px;
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+
+      /* Glow laranja FIXO */
+      text-shadow: 
+        0 0 25px #ff6b35,
+        0 0 50px #ff6b35,
+        0 0 75px #ff6b35,
+        0 0 100px #ff6b35;
+
+      /* Arredondamento visual */
+      filter: blur(0.4px);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Borda laranja arredondada (efeito glow externo) */
+    .logo-text::before {
+      content: '<FTZEN/>';
+      position: absolute;
+      top: 0; left: 0;
+      color: transparent;
+      -webkit-text-stroke: 2.5px #ff6b35;
+      filter: blur(4px);
+      z-index: -1;
+    }
+
+    /* EM BREVE - Gradiente FIXO */
+    .soon-text {
+      font-size: 4.6rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ff6b35, #00c2ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 9px;
+      margin-bottom: 10px;
+
+      /* Glow fixo */
+      text-shadow: 
+        0 0 30px rgba(255,107,53,0.6),
+        0 0 60px rgba(0,194,255,0.4);
+
+      filter: blur(0.3px);
+    }
+
+    /* Subtexto FIXO */
+    .subtitle {
+      font-size: 1.35rem;
+      color: #ddd;
+      letter-spacing: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+      text-shadow: 0 0 8px rgba(255,255,255,0.2);
+    }
+
+    /* Partículas (ÚNICA COISA EM MOVIMENTO) */
+    .particles {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .particle {
+      position: absolute;
+      background: radial-gradient(circle, rgba(255,107,53,0.75), transparent 70%);
+      border-radius: 50%;
+      filter: blur(1.8px);
+      opacity: 0;
+      animation: floatParticle linear infinite;
+    }
+
+    .particle.blue {
+      background: radial-gradient(circle, rgba(0,194,255,0.75), transparent 70%);
+    }
+
+    @keyframes floatParticle {
+      0% {
+        transform: translateY(110vh) translateX(-60vw) rotate(0deg);
+        opacity: 0;
+      }
+      15% { opacity: 0.7; }
+      85% { opacity: 0.7; }
+      100% {
+        transform: translateY(-30vh) translateX(160vw) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 <body>
-<h1>Hello Ftzen</h1>
+
+  <div class="bg"></div>
+  <div class="particles" id="particles"></div>
+
+  <div class="container">
+    <h1 class="logo-text">&lt;FTZEN/&gt;</h1>
+    <h2 class="soon-text">EM BREVE</h2>
+    <p class="subtitle">Algo incrível está chegando...</p>
+  </div>
+
+  <script>
+    const container = document.getElementById('particles');
+
+    function createParticle() {
+      const p = document.createElement('div');
+      p.classList.add('particle');
+
+      const size = Math.random() * 9 + 4;
+      p.style.width = p.style.height = `${size}px`;
+      p.style.left = `${Math.random() * 100}vw`;
+
+      const duration = Math.random() * 22 + 18;
+      const delay = Math.random() * 8;
+      p.style.animation = `floatParticle ${duration}s linear ${delay}s infinite`;
+
+      if (Math.random() > 0.5) p.classList.add('blue');
+
+      container.appendChild(p);
+      setTimeout(() => p.remove(), (duration + delay) * 1000 + 1000);
+    }
+
+    setInterval(createParticle, 220);
+    for (let i = 0; i < 25; i++) {
+      setTimeout(createParticle, i * 160);
+    }
+  </script>
 </body>
 </html>
