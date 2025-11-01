@@ -25,7 +25,7 @@
       position: relative;
     }
 
-    /* Fundo com leve gradiente (sem animação forte) */
+    /* Fundo fixo com blur */
     .bg {
       position: absolute;
       top: 0; left: 0;
@@ -36,76 +36,76 @@
       z-index: 1;
     }
 
-    /* Container central */
+    /* Container responsivo */
     .container {
       text-align: center;
       z-index: 10;
       position: relative;
+      padding: 20px;
+      width: 90%;
+      max-width: 800px;
     }
 
-    /* <FTZEN/> - Preto com glow laranja FIXO */
+    /* <FTZEN/> - Responsivo */
     .logo-text {
-      font-size: 6.8rem;
+      font-size: clamp(3rem, 12vw, 7rem);
       font-weight: 900;
       color: #000;
-      letter-spacing: 5px;
-      margin-bottom: 15px;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
       position: relative;
       display: inline-block;
 
       /* Glow laranja FIXO */
       text-shadow: 
-        0 0 25px #ff6b35,
-        0 0 50px #ff6b35,
-        0 0 75px #ff6b35,
-        0 0 100px #ff6b35;
+        0 0 20px #ff6b35,
+        0 0 40px #ff6b35,
+        0 0 60px #ff6b35,
+        0 0 90px #ff6b35;
 
-      /* Arredondamento visual */
       filter: blur(0.4px);
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Borda laranja arredondada (efeito glow externo) */
     .logo-text::before {
       content: '<FTZEN/>';
       position: absolute;
       top: 0; left: 0;
       color: transparent;
-      -webkit-text-stroke: 2.5px #ff6b35;
+      -webkit-text-stroke: clamp(1.5px, 0.5vw, 3px) #ff6b35;
       filter: blur(4px);
       z-index: -1;
     }
 
-    /* EM BREVE - Gradiente FIXO */
+    /* EM BREVE - Responsivo */
     .soon-text {
-      font-size: 4.6rem;
+      font-size: clamp(2.2rem, 8vw, 5rem);
       font-weight: 700;
       background: linear-gradient(135deg, #ff6b35, #00c2ff);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      letter-spacing: 9px;
-      margin-bottom: 10px;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.8rem;
 
-      /* Glow fixo */
       text-shadow: 
-        0 0 30px rgba(255,107,53,0.6),
-        0 0 60px rgba(0,194,255,0.4);
+        0 0 25px rgba(255,107,53,0.6),
+        0 0 50px rgba(0,194,255,0.4);
 
       filter: blur(0.3px);
     }
 
-    /* Subtexto FIXO */
+    /* Subtexto - Responsivo */
     .subtitle {
-      font-size: 1.35rem;
+      font-size: clamp(0.9rem, 2.5vw, 1.4rem);
       color: #ddd;
-      letter-spacing: 4px;
+      letter-spacing: 0.2em;
       font-weight: 600;
       text-transform: uppercase;
       text-shadow: 0 0 8px rgba(255,255,255,0.2);
     }
 
-    /* Partículas (ÚNICA COISA EM MOVIMENTO) */
+    /* Partículas (responsivas e suaves) */
     .particles {
       position: absolute;
       top: 0; left: 0;
@@ -139,6 +139,14 @@
         opacity: 0;
       }
     }
+
+    /* Responsividade das partículas */
+    @media (max-width: 768px) {
+      .particle { filter: blur(1.2px); }
+    }
+    @media (max-width: 480px) {
+      .particle { filter: blur(1px); }
+    }
   </style>
 </head>
 <body>
@@ -159,7 +167,9 @@
       const p = document.createElement('div');
       p.classList.add('particle');
 
-      const size = Math.random() * 9 + 4;
+      // Tamanho responsivo
+      const baseSize = window.innerWidth < 768 ? 6 : 9;
+      const size = Math.random() * baseSize + 4;
       p.style.width = p.style.height = `${size}px`;
       p.style.left = `${Math.random() * 100}vw`;
 
@@ -173,10 +183,22 @@
       setTimeout(() => p.remove(), (duration + delay) * 1000 + 1000);
     }
 
+    // Cria continuamente
     setInterval(createParticle, 220);
+
+    // Inicia com várias
     for (let i = 0; i < 25; i++) {
       setTimeout(createParticle, i * 160);
     }
+
+    // Recalcula partículas ao redimensionar
+    window.addEventListener('resize', () => {
+      // Limpa e recria com tamanhos ajustados
+      container.innerHTML = '';
+      for (let i = 0; i < 20; i++) {
+        setTimeout(createParticle, i * 100);
+      }
+    });
   </script>
 </body>
 </html>
